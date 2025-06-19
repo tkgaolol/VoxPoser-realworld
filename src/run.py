@@ -41,6 +41,7 @@ client = AzureOpenAI(
   api_key = api_key
 )
 
+serial_port = "/dev/ttyUSB0"
 
 
 

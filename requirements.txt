@@ -3,3 +3,11 @@ openai
 plotly
 transforms3d
 open3d
+pyrealsense2
+ultralytics
+torch
+opencv-python
+numpy
+pyserial
+transformers
+accelerate
