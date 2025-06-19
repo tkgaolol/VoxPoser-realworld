@@ -1,13 +1,28 @@
-
-import openai
+from openai import AzureOpenAI
 from time import sleep
-from openai.error import RateLimitError, APIConnectionError
+from openai import RateLimitError, APIConnectionError
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import TerminalFormatter
 from utils import load_prompt, DynamicObservation, IterableDynamicObservation
 import time
 from LLM_cache import DiskCache
+import configparser
+import os
+
+# Load Azure OpenAI config from config.ini
+config = configparser.ConfigParser()
+config_path = os.path.join(os.path.dirname(__file__), '../config.ini')
+config.read(config_path)
+azure_endpoint = config['azure_openai']['azure_endpoint']
+api_version = config['azure_openai']['api_version']
+api_key = config['azure_openai']['api_key']
+
+client = AzureOpenAI(
+  azure_endpoint = azure_endpoint,
+  api_version = api_version,
+  api_key = api_key
+)
 
 class LMP:
     """Language Model Program (LMP), adopted from Code as Policies."""
@@ -65,6 +80,7 @@ class LMP:
                 user1 = '\n'.join(user1.split('\n')[:-4]) + '\n' + '\n'.join(user1.split('\n')[-3:])
                 # add obj_context to user2
                 user2 = obj_context.strip() + '\n' + user2
+            engine = 'gpt-4'
             messages=[
                 {"role": "system", "content": "You are a helpful assistant that pays attention to the user's instructions and writes good python code for operating a robot arm in a tabletop environment."},
                 {"role": "user", "content": user1},
@@ -76,7 +92,7 @@ class LMP:
                 print('(using cache)', end=' ')
                 return self._cache[kwargs]
             else:
-                ret = openai.ChatCompletion.create(**kwargs)['choices'][0]['message']['content']
+                ret = client.chat.completions.create(**kwargs).choices[0].message.content
                 # post processing
                 ret = ret.replace('```', '').replace('python', '').strip()
                 self._cache[kwargs] = ret
@@ -86,7 +102,7 @@ class LMP:
                 print('(using cache)', end=' ')
                 return self._cache[kwargs]
             else:
-                ret = openai.Completion.create(**kwargs)['choices'][0]['text'].strip()
+                ret = client.completions.create(**kwargs).choices[0].text.strip()
                 self._cache[kwargs] = ret
                 return ret
 

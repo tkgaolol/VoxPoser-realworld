@@ -1,0 +1,4 @@
+[submodule "src/toolbox/perceptron/XMem"]
+	path = src/toolbox/perceptron/XMem
+	url = https://github.com/hkchengrex/XMem.git
+

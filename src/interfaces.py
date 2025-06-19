@@ -39,9 +39,12 @@ class LMP_interface():
     """return an observation dict containing useful information about the object"""
     if obj_name.lower() in EE_ALIAS:
       obs_dict = dict()
+      ee_pos = self.get_ee_pos()  # Store the position in a variable
       obs_dict['name'] = obj_name
-      obs_dict['position'] = self.get_ee_pos()
-      obs_dict['aabb'] = np.array([self.get_ee_pos(), self.get_ee_pos()])
+      # obs_dict['position'] = self.get_ee_pos()
+      # obs_dict['aabb'] = np.array([self.get_ee_pos(), self.get_ee_pos()])
+      obs_dict['position'] = ee_pos
+      obs_dict['aabb'] = np.array([ee_pos, ee_pos])  # Use the stored position
       obs_dict['_position_world'] = self._env.get_ee_pos()
     elif obj_name.lower() in TABLE_ALIAS:
       offset_percentage = 0.1

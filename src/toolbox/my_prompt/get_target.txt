@@ -1,0 +1,1 @@
+Table now only contains {objects_on_table}. User will provide instructions or commands related to the object. Based on user input, get the target objects on the table that the robot arm needs to interact with. Respond only with the python list of target objects. The target objects should be on the table. Below is the user input:
