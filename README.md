@@ -5,6 +5,7 @@
 2. Robust testing is not stable (if I move the target while the robot arm is executing a task, it will not update to the new position)
 3. whole-arm obstacle avoidance planning
 4. multi depth camera? (current implementation will only get the center point from one surface)
+5. transfer the whole application to ros?
 
 ## 🛠️ Setup Instructions
 ### Hardware Setup
